@@ -31,6 +31,21 @@ public class MainTeleOp extends CommandOpMode {
                 robot.getDriveSubsystem().getHeading()
         );
 
+        telemetry.addData(
+                "Left Slide",
+                robot.getLiftSubsystem().getLeftPosition()
+        );
+
+        telemetry.addData(
+                "Right Slide",
+                robot.getLiftSubsystem().getRightPosition()
+        );
+
+        telemetry.addData(
+                "Lift Power",
+                robot.getLiftSubsystem().getPower()
+        );
+
         telemetry.update();
     }
 
