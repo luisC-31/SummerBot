@@ -1,30 +1,16 @@
 package org.firstinspires.ftc.teamcode.commands;
-
 import com.arcrobotics.ftclib.command.CommandBase;
-
 import org.firstinspires.ftc.teamcode.subsystems.DriveSubsystem;
-
 import java.util.function.DoubleSupplier;
-
-
 public class DriveCommand extends CommandBase {
-
     private final DriveSubsystem driveSubsystem;
-
     private final DoubleSupplier ySupplier;
     private final DoubleSupplier xSupplier;
     private final DoubleSupplier turnSupplier;
 
-
-    public DriveCommand(
-            DriveSubsystem driveSubsystem,
-            DoubleSupplier ySupplier,
-            DoubleSupplier xSupplier,
-            DoubleSupplier turnSupplier
-    ) {
-
+    public DriveCommand(DriveSubsystem driveSubsystem, DoubleSupplier ySupplier, DoubleSupplier xSupplier, DoubleSupplier turnSupplier)
+    {
         this.driveSubsystem = driveSubsystem;
-
         this.ySupplier = ySupplier;
         this.xSupplier = xSupplier;
         this.turnSupplier = turnSupplier;
@@ -35,11 +21,9 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-
         double y = -ySupplier.getAsDouble();
         double x = xSupplier.getAsDouble();
         double turn = turnSupplier.getAsDouble();
-
 
         double deadzone = 0.05;
 
@@ -51,7 +35,6 @@ public class DriveCommand extends CommandBase {
 
         if(Math.abs(turn) < deadzone)
             turn = 0;
-
 
         driveSubsystem.driveFieldCentric(y, x, turn);
     }
