@@ -6,28 +6,24 @@ public class IntakeCommand extends CommandBase {
     private final IntakeSubsystem intakeSubsystem;
     private final double power;
 
-
-    public IntakeCommand(IntakeSubsystem intakeSubsystem, double power)
+    public IntakeCommand(IntakeSubsystem intakeSubsystem)
     {
 
         this.intakeSubsystem = intakeSubsystem;
-        this.power = power;
+        power = 1;
 
         addRequirements(intakeSubsystem);
     }
 
-
     @Override
     public void initialize() {
-        intakeSubsystem.runIntake(power);
+        intakeSubsystem.runIntake();
     }
-
 
     @Override
     public void end(boolean interrupted) {
         intakeSubsystem.stop();
     }
-
 
     @Override
     public boolean isFinished() {

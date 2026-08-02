@@ -1,10 +1,10 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class DriveSubsystem extends SubsystemBase {
     private final DcMotor frontLeft;
@@ -13,23 +13,13 @@ public class DriveSubsystem extends SubsystemBase {
     private final DcMotor backRight;
     private final IMU imu;
 
+    public DriveSubsystem(RobotHardware robot) {
+        frontLeft = robot.frontLeft;
+        frontRight = robot.frontRight;
+        backLeft = robot.backLeft;
+        backRight = robot.backRight;
 
-    public DriveSubsystem(HardwareMap hardwareMap) {
-
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
-
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
-
-        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        imu = hardwareMap.get(IMU.class, "imu");
+        imu = robot.imu;
 
         RevHubOrientationOnRobot orientation =
                 new RevHubOrientationOnRobot(
@@ -41,7 +31,6 @@ public class DriveSubsystem extends SubsystemBase {
                 new IMU.Parameters(orientation)
         );
     }
-
 
     public void drive(double y, double x, double turn) {
 

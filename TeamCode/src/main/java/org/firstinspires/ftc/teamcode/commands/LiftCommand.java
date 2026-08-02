@@ -13,12 +13,10 @@ public class LiftCommand extends CommandBase {
         addRequirements(liftSubsystem);
     }
 
-
     @Override
     public void initialize() {
         liftSubsystem.setPosition(position);
     }
-
 
     @Override
     public boolean isFinished() {

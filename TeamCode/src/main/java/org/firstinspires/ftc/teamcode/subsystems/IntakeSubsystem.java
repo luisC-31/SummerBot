@@ -1,20 +1,16 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final DcMotor intakeMotor;
-    public IntakeSubsystem(HardwareMap hardwareMap) {
-        intakeMotor = hardwareMap.get(DcMotor.class,"intake");
-
-        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
-
-        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+    public IntakeSubsystem(RobotHardware robot) {
+        intakeMotor = robot.intakeMotor;
     }
 
-    public void runIntake(double power) {
-        intakeMotor.setPower(power);
+    public void runIntake() {
+        intakeMotor.setPower(1);
     }
 
 

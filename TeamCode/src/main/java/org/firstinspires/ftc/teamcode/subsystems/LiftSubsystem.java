@@ -2,72 +2,43 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
+import org.firstinspires.ftc.teamcode.constants.LiftConstants;
+import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
 public class LiftSubsystem extends SubsystemBase {
     private final DcMotor leftSlide;
     private final DcMotor rightSlide;
-    private double currentPower = 0;
-
     private final PIDController controller;
 
-    public static double kP = 0.0022;
-    public static double kI = 0.0;
-    public static double kD = 0.0002;
-
-    public static double kG = 0.025;
-    private int targetPosition = 0;
-
-    public static final int LEVEL_0 = 0;
-    public static final int LEVEL_1 = 600;
-    public static final int LEVEL_2 = 1400;
-
-
-    public LiftSubsystem(HardwareMap hardwareMap) {
-        leftSlide = hardwareMap.get(DcMotor.class,"leftSlide");
-        rightSlide = hardwareMap.get(DcMotor.class,"rightSlide");
-
-        leftSlide.setDirection(DcMotor.Direction.FORWARD);
-        rightSlide.setDirection(DcMotor.Direction.FORWARD);
-
-        leftSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        rightSlide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
+    public LiftSubsystem(RobotHardware robot) {
+        leftSlide = robot.leftSlide;
+        rightSlide = robot.rightSlide;
 
         controller = new PIDController(
-                kP,
-                kI,
-                kD
+                LiftConstants.kP,
+                LiftConstants.kI,
+                LiftConstants.kD
         );
     }
 
-
-
     public void setPosition(int position) {
-        targetPosition = position;
+        LiftConstants.targetPosition = position;
     }
 
 
     @Override
     public void periodic() {
         controller.setPID(
-                kP,
-                kI,
-                kD
+                LiftConstants.kP,
+                LiftConstants.kI,
+                LiftConstants.kD
         );
 
         int currentPosition = (leftSlide.getCurrentPosition() + rightSlide.getCurrentPosition()) / 2;
 
-        double pid = controller.calculate(currentPosition, targetPosition);
+        double pid = controller.calculate(currentPosition, LiftConstants.targetPosition);
 
-        double power = pid + kG;
+        double power = pid + LiftConstants.kG;
         double maxPower;
 
         if (power > 0) {
@@ -85,7 +56,7 @@ public class LiftSubsystem extends SubsystemBase {
                 )
         );
 
-        currentPower = power;
+        LiftConstants.currentPower = power;
 
         leftSlide.setPower(power);
         rightSlide.setPower(power);
@@ -95,7 +66,7 @@ public class LiftSubsystem extends SubsystemBase {
     public boolean atTarget() {
         int averagePosition = (leftSlide.getCurrentPosition() + rightSlide.getCurrentPosition()) / 2;
 
-        return Math.abs(targetPosition - averagePosition) < 20;
+        return Math.abs(LiftConstants.targetPosition - averagePosition) < 20;
     }
 
 
@@ -110,6 +81,6 @@ public class LiftSubsystem extends SubsystemBase {
     }
 
     public double getPower() {
-        return currentPower;
+        return LiftConstants.currentPower;
     }
 }
