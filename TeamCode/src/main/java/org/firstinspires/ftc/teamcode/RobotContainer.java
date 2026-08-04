@@ -71,12 +71,4 @@ public class RobotContainer {
         new GamepadButton(driverGamepad,GamepadKeys.Button.Y).whenPressed(
                 new InstantCommand(bucketSubsystem::dump,bucketSubsystem));
     }
-
-    public DriveSubsystem getDriveSubsystem() {
-        return driveSubsystem;
-    }
-
-    public LiftSubsystem getLiftSubsystem() {
-        return liftSubsystem;
-    }
 }

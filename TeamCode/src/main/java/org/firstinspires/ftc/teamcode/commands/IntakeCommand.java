@@ -8,7 +8,6 @@ public class IntakeCommand extends CommandBase {
 
     public IntakeCommand(IntakeSubsystem intakeSubsystem)
     {
-
         this.intakeSubsystem = intakeSubsystem;
         power = 1;
 
