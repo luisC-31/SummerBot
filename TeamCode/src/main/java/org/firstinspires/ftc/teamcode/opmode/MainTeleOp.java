@@ -73,6 +73,9 @@ public class MainTeleOp extends CommandOpMode {
 
         new GamepadButton(driverGamepad,GamepadKeys.Button.RIGHT_BUMPER)
         .whenPressed(new InstantCommand(bucketSubsystem::upPosition,bucketSubsystem));
+
+        new GamepadButton(driverGamepad, GamepadKeys.Button.Y)
+        .whenPressed(new InstantCommand(bucketSubsystem::dump, bucketSubsystem));
     }
 
     @Override
