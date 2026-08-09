@@ -20,9 +20,6 @@ public class BucketSubsystem extends SubsystemBase {
     public void upPosition() {
         leftArm.setPosition(BucketConstants.BUCKET_UP);
         rightArm.setPosition(BucketConstants.BUCKET_UP);
-
-        leftBucket.setPosition(0.4);
-        rightBucket.setPosition(0.4);
     }
 
     public void downPosition() {
@@ -35,6 +32,38 @@ public class BucketSubsystem extends SubsystemBase {
 
     public void dump() {
         leftBucket.setPosition(BucketConstants.BUCKET_DUMP);
+        rightBucket.setPosition(BucketConstants.BUCKET_DUMP);
+    }
+
+    public void upPositionLeft() {
+        leftArm.setPosition(BucketConstants.BUCKET_UP);
+
+        leftBucket.setPosition(0.4);
+    }
+
+    public void downPositionLeft() {
+        leftArm.setPosition(BucketConstants.BUCKET_DOWN);
+
+        leftBucket.setPosition(BucketConstants.BUCKET_DUMP_RESET);
+    }
+
+    public void dumpLeft() {
+        leftBucket.setPosition(BucketConstants.BUCKET_DUMP);
+    }
+
+    public void upPositionRight() {
+        rightArm.setPosition(BucketConstants.BUCKET_UP);
+
+        rightBucket.setPosition(0.4);
+    }
+
+    public void downPositionRight() {
+        rightArm.setPosition(BucketConstants.BUCKET_DOWN);
+
+        rightBucket.setPosition(BucketConstants.BUCKET_DUMP_RESET);
+    }
+
+    public void dumpRight() {
         rightBucket.setPosition(BucketConstants.BUCKET_DUMP);
     }
 }

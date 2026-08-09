@@ -12,9 +12,8 @@ import org.firstinspires.ftc.teamcode.commands.LiftCommand;
 import org.firstinspires.ftc.teamcode.constants.*;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 import org.firstinspires.ftc.teamcode.subsystems.*;
-
-@TeleOp(name = "Main TeleOp")
-public class MainTeleOp extends CommandOpMode {
+@TeleOp(name = "Main TeleOp, Left Test")
+public class MainTeleOpLeftServoTest extends CommandOpMode {
     private RobotHardware robot;
     private DriveSubsystem driveSubsystem;
     private LiftSubsystem liftSubsystem;
@@ -52,31 +51,31 @@ public class MainTeleOp extends CommandOpMode {
     private void setButtons() {
         new GamepadButton(driverGamepad,
                 GamepadKeys.Button.BACK)
-        .whenPressed(driveSubsystem::resetHeading);
+                .whenPressed(driveSubsystem::resetHeading);
 
         new GamepadButton(driverGamepad,
                 GamepadKeys.Button.A)
-        .toggleWhenPressed(new IntakeCommand(intakeSubsystem));
+                .toggleWhenPressed(new IntakeCommand(intakeSubsystem));
 
         new GamepadButton(driverGamepad,
                 GamepadKeys.Button.DPAD_DOWN)
-        .whenPressed(new LiftCommand(liftSubsystem,LiftConstants.LEVEL_0));
+                .whenPressed(new LiftCommand(liftSubsystem,LiftConstants.LEVEL_0));
 
         new GamepadButton(driverGamepad,
                 GamepadKeys.Button.DPAD_LEFT)
-        .whenPressed(new LiftCommand(liftSubsystem,LiftConstants.LEVEL_1));
+                .whenPressed(new LiftCommand(liftSubsystem,LiftConstants.LEVEL_1));
 
         new GamepadButton(driverGamepad,GamepadKeys.Button.DPAD_UP)
-        .whenPressed(new LiftCommand(liftSubsystem,LiftConstants.LEVEL_2));
+                .whenPressed(new LiftCommand(liftSubsystem,LiftConstants.LEVEL_2));
 
         new GamepadButton(driverGamepad,GamepadKeys.Button.LEFT_BUMPER)
-        .whenPressed(new InstantCommand(bucketSubsystem::downPosition,bucketSubsystem));
+                .whenPressed(new InstantCommand(bucketSubsystem::downPositionLeft,bucketSubsystem));
 
         new GamepadButton(driverGamepad,GamepadKeys.Button.RIGHT_BUMPER)
-        .whenPressed(new InstantCommand(bucketSubsystem::upPosition,bucketSubsystem));
+                .whenPressed(new InstantCommand(bucketSubsystem::upPositionLeft,bucketSubsystem));
 
         new GamepadButton(driverGamepad, GamepadKeys.Button.Y)
-        .whenPressed(new InstantCommand(bucketSubsystem::dump, bucketSubsystem));
+                .whenPressed(new InstantCommand(bucketSubsystem::dumpLeft, bucketSubsystem));
     }
 
     @Override
@@ -87,11 +86,6 @@ public class MainTeleOp extends CommandOpMode {
 
         telemetry.addData("Left Slide",liftSubsystem.getLeftPosition());
         telemetry.addData("Right Slide",liftSubsystem.getRightPosition());
-
-
-        telemetry.addData("Left Slide",liftSubsystem.getPowerL());
-        telemetry.addData("Right Slide",liftSubsystem.getPowerR());
-        telemetry.addData("avg slidepos", liftSubsystem.getCurrentPosition());
 
         telemetry.update();
     }

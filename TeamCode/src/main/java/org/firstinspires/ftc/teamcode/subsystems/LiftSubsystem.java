@@ -5,19 +5,26 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.constants.LiftConstants;
 import org.firstinspires.ftc.teamcode.util.RobotHardware;
 
+import static org.firstinspires.ftc.teamcode.constants.LiftConstants.*;
+
 public class LiftSubsystem extends SubsystemBase {
     private final DcMotor leftSlide;
     private final DcMotor rightSlide;
-    private final PIDController controller;
-
+    private final PIDController controllerLeft, controllerRight;
+    int currentPosition;
     public LiftSubsystem(RobotHardware robot) {
         leftSlide = robot.leftSlide;
         rightSlide = robot.rightSlide;
 
-        controller = new PIDController(
-                LiftConstants.kP,
-                LiftConstants.kI,
-                LiftConstants.kD
+        controllerLeft = new PIDController(
+                LiftConstants.kPLeft,
+                LiftConstants.kILeft,
+                LiftConstants.kDLeft
+        );
+        controllerRight = new PIDController(
+                LiftConstants.kPRight,
+                LiftConstants.kIRight,
+                LiftConstants.kDRight
         );
     }
 
@@ -28,38 +35,62 @@ public class LiftSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        controller.setPID(
-                LiftConstants.kP,
-                LiftConstants.kI,
-                LiftConstants.kD
+        controllerLeft.setPID(
+                LiftConstants.kPLeft,
+                LiftConstants.kILeft,
+                LiftConstants.kDLeft
+        );
+        controllerRight.setPID(
+                LiftConstants.kPRight,
+                LiftConstants.kIRight,
+                LiftConstants.kDRight
         );
 
-        int currentPosition = (leftSlide.getCurrentPosition() + rightSlide.getCurrentPosition()) / 2;
+        currentPosition = (leftSlide.getCurrentPosition() + rightSlide.getCurrentPosition()) / 2;
 
-        double pid = controller.calculate(currentPosition, LiftConstants.targetPosition);
+        double pidL = controllerLeft.calculate(leftSlide.getCurrentPosition(), LiftConstants.targetPosition);
+        double pidR = controllerRight.calculate(rightSlide.getCurrentPosition(), LiftConstants.targetPosition + rightOffset);
 
-        double power = pid + LiftConstants.kG;
+        double powerL = pidL + LiftConstants.kG;
+        double powerR = pidR + LiftConstants.kG;
         double maxPower;
 
-        if (power > 0) {
-            maxPower = 0.4;   // going up
+        if (powerL > 0) {
+            maxPower = maxPowerUp;   // going up
         }
-        else {
-            maxPower = 0.3;  // going down
+        else {        // CHANGE OTHER ONE TOO
+            maxPower = maxPowerDown;  // going down
         }
 
-        power = Math.max(
+        powerL = Math.max(
                 -maxPower,
                 Math.min(
                         maxPower,
-                        power
+                        powerL
                 )
         );
 
-        LiftConstants.currentPower = power;
+        LiftConstants.currentPowerL = powerL;
 
-        leftSlide.setPower(power);
-        rightSlide.setPower(power);
+        if (powerR > 0) {
+            maxPower = maxPowerUp;   // going up
+        }
+        else {       // CHANGE OTHER ONE TOO
+            maxPower = maxPowerDown;  // going down
+        }
+
+        powerR = Math.max(
+                -maxPower,
+                Math.min(
+                        maxPower,
+                        powerR
+                )
+        );
+
+        LiftConstants.currentPowerR = powerR;
+
+        leftSlide.setPower(powerL);
+        rightSlide.setPower(powerR);
 
     }
 
@@ -80,7 +111,13 @@ public class LiftSubsystem extends SubsystemBase {
         return rightSlide.getCurrentPosition();
     }
 
-    public double getPower() {
-        return LiftConstants.currentPower;
+    public double getPowerL() {
+        return LiftConstants.currentPowerL;
+    }
+    public double getPowerR() {
+        return LiftConstants.currentPowerR;
+    }
+    public int getCurrentPosition() {
+        return currentPosition;
     }
 }
