@@ -10,7 +10,7 @@ import static org.firstinspires.ftc.teamcode.constants.LiftConstants.*;
 public class LiftSubsystem extends SubsystemBase {
     private final DcMotor leftSlide;
     private final DcMotor rightSlide;
-    private final PIDController controllerLeft, controllerRight;
+    private final PIDController controllerLeft, controllerRight, controllerLeftD, controllerRightD;
     int currentPosition;
     public LiftSubsystem(RobotHardware robot) {
         leftSlide = robot.leftSlide;
@@ -25,6 +25,16 @@ public class LiftSubsystem extends SubsystemBase {
                 LiftConstants.kPRight,
                 LiftConstants.kIRight,
                 LiftConstants.kDRight
+        );
+        controllerLeftD = new PIDController(
+                LiftConstants.kPLeftD,
+                LiftConstants.kILeftD,
+                LiftConstants.kDLeftD
+        );
+        controllerRightD = new PIDController(
+                LiftConstants.kPRightD,
+                LiftConstants.kIRightD,
+                LiftConstants.kDRightD
         );
     }
 
@@ -45,11 +55,24 @@ public class LiftSubsystem extends SubsystemBase {
                 LiftConstants.kIRight,
                 LiftConstants.kDRight
         );
+        controllerLeftD.setPID(
+                LiftConstants.kPLeftD,
+                LiftConstants.kILeftD,
+                LiftConstants.kDLeftD
+        );
+        controllerRightD.setPID(
+                LiftConstants.kPRightD,
+                LiftConstants.kIRightD,
+                LiftConstants.kDRightD
+        );
 
         currentPosition = (leftSlide.getCurrentPosition() + rightSlide.getCurrentPosition()) / 2;
 
         double pidL = controllerLeft.calculate(leftSlide.getCurrentPosition(), LiftConstants.targetPosition);
         double pidR = controllerRight.calculate(rightSlide.getCurrentPosition(), LiftConstants.targetPosition + rightOffset);
+        double pidLD = controllerLeftD.calculate(leftSlide.getCurrentPosition(), LiftConstants.targetPosition);
+        double pidRD = controllerRightD.calculate(rightSlide.getCurrentPosition(), LiftConstants.targetPosition + rightOffset);
+
 
         double powerL = pidL + LiftConstants.kG;
         double powerR = pidR + LiftConstants.kG;
@@ -59,7 +82,8 @@ public class LiftSubsystem extends SubsystemBase {
             maxPower = maxPowerUp;   // going up
         }
         else {        // CHANGE OTHER ONE TOO
-            maxPower = maxPowerDown;  // going down
+            powerL = pidLD + LiftConstants.kG;
+            maxPower = 1;// going down
         }
 
         powerL = Math.max(
@@ -75,8 +99,9 @@ public class LiftSubsystem extends SubsystemBase {
         if (powerR > 0) {
             maxPower = maxPowerUp;   // going up
         }
-        else {       // CHANGE OTHER ONE TOO
-            maxPower = maxPowerDown;  // going down
+        else {        // CHANGE OTHER ONE TOO
+            powerR = pidRD + LiftConstants.kG;
+            maxPower = 1;// going down
         }
 
         powerR = Math.max(
@@ -88,6 +113,7 @@ public class LiftSubsystem extends SubsystemBase {
         );
 
         LiftConstants.currentPowerR = powerR;
+
 
         leftSlide.setPower(powerL);
         rightSlide.setPower(powerR);

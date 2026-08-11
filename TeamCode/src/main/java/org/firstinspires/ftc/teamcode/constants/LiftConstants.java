@@ -4,14 +4,22 @@ import com.bylazar.configurables.annotations.Configurable;
 
 @Configurable
 public class LiftConstants {
-    public static double kPLeft = 0.002;
-    public static double kILeft = 0.0;
-    public static double kDLeft = 0.0002;
+    public static final double kPLeft = 0.002;
+    public static final double kILeft = 0.0;
+    public static final double kDLeft = 0.0002;
 
-    public static double kPRight = 0.002;
-    public static double kIRight = 0.0;
-    public static double kDRight = 0.0002;
-    public static double kG = 0.025;
+    public static final double kPRight = 0.002;
+    public static final double kIRight = 0.0;
+    public static final double kDRight = 0.0002;
+    // _------------------------------------------------------------
+    public static double kPLeftD = 0.002;
+    public static double kILeftD = 0.0;
+    public static double kDLeftD = 0.0002;
+
+    public static double kPRightD = 0.002;
+    public static double kIRightD = 0.0;
+    public static double kDRightD = 0.0002;
+    public static final double kG = 0.025;
     //-----------------------------------------------------------------
     public static int targetPosition = 0;
     public static int LEVEL_0 = 0;
