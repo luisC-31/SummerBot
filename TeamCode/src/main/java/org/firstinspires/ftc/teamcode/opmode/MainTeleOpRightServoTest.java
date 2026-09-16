@@ -6,6 +6,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.LiftCommand;
@@ -51,7 +53,7 @@ public class MainTeleOpRightServoTest extends CommandOpMode {
     private void setButtons() {
         new GamepadButton(driverGamepad,
                 GamepadKeys.Button.BACK)
-                .whenPressed(driveSubsystem::resetHeading);
+                .whenPressed(driveSubsystem::resetIMU);
 
         new GamepadButton(driverGamepad,
                 GamepadKeys.Button.A)
@@ -82,7 +84,7 @@ public class MainTeleOpRightServoTest extends CommandOpMode {
     public void run() {
         CommandScheduler.getInstance().run();
 
-        telemetry.addData("Heading",driveSubsystem.getHeading());
+        telemetry.addData("Heading",driveSubsystem.getHeading(AngleUnit.RADIANS));
 
         telemetry.addData("Left Slide",liftSubsystem.getLeftPosition());
         telemetry.addData("Right Slide",liftSubsystem.getRightPosition());

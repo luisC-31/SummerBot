@@ -7,6 +7,8 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.command.button.GamepadButton;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.commands.DriveCommand;
 import org.firstinspires.ftc.teamcode.commands.IntakeCommand;
 import org.firstinspires.ftc.teamcode.commands.LiftCommand;
@@ -52,7 +54,7 @@ public class ServoMoveTest extends CommandOpMode {
     public void run() {
         CommandScheduler.getInstance().run();
 
-        telemetry.addData("Heading",driveSubsystem.getHeading());
+        telemetry.addData("Heading",driveSubsystem.getHeading(AngleUnit.RADIANS));
 
         telemetry.addData("Left Slide",liftSubsystem.getLeftPosition());
         telemetry.addData("Right Slide",liftSubsystem.getRightPosition());

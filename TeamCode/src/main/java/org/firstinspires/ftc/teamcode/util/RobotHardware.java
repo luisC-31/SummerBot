@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode.util;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.hardware.gobilda.GoBildaPinpointDriver;
 
 public class RobotHardware {
     public DcMotor frontLeft;
@@ -21,8 +22,7 @@ public class RobotHardware {
 
     public Servo leftBucket;
     public Servo rightBucket;
-
-    public IMU imu;
+    public GoBildaPinpointDriver pinpoint;
 
     public void init(HardwareMap hardwareMap) {
         frontLeft = hardwareMap.get(DcMotor.class,"frontLeft");
@@ -32,6 +32,8 @@ public class RobotHardware {
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -51,8 +53,8 @@ public class RobotHardware {
         leftSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        leftSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightSlide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //-------------------------------------------------------------------------------------------------------------
         intakeMotor = hardwareMap.get(DcMotor.class,"intakeMotor");
@@ -70,7 +72,10 @@ public class RobotHardware {
         rightBucket = hardwareMap.get(Servo.class,"rightBucket");
 
         //-------------------------------------------------------------------------------------------------------------
-        imu = hardwareMap.get(IMU.class,"imu");
 
+        pinpoint = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        pinpoint.setEncoderResolution(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        pinpoint.setEncoderDirections(GoBildaPinpointDriver.EncoderDirection.FORWARD, GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        pinpoint.resetPosAndIMU();
     }
 }
